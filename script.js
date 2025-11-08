@@ -8,47 +8,39 @@ sendButton.addEventListener("click", sendMessage);
 
 // Also send message when pressing Enter
 userInput.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-        sendMessage();
-    }
+  if (event.key === "Enter") {
+    sendMessage();
+  }
 });
 
-function sendMessage() {
-    const message = userInput.value.trim(); // Get text from input
-    if (message === "") return; // Stop if empty input
+// Function to send message to backend
+async function sendMessage() {
+  const message = userInput.value.trim();
+  if (message === "") return;
 
-    // Display user's message
-    displayMessage(message, "user");
+  displayMessage(message, "user");
+  userInput.value = "";
 
-    // Clear the input field
-    userInput.value = "";
+  try {
+    const response = await fetch("/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ message })
+    });
 
-    // Simulate AI reply (for now)
-    setTimeout(() => {
-        const aiReply = generateAIReply(message);
-        displayMessage(aiReply, "ai");
-    }, 800); // 800ms delay to simulate thinking
+    const data = await response.json();
+    displayMessage(data.reply, "ai");
+  } catch (error) {
+    displayMessage("Error: Could not connect to AI.", "ai");
+    console.error(error);
+  }
 }
 
 // Function to display messages in the chat box
 function displayMessage(text, sender) {
-    const messageDiv = document.createElement("div");
-    messageDiv.classList.add("message", sender);
-    messageDiv.textContent = text;
-    chatBox.appendChild(messageDiv);
-    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to latest message
-}
-
-// Placeholder AI logic — you’ll replace this later with a real AI API
-function generateAIReply(userMessage) {
-    // Very simple simulated responses
-    const responses = [
-        "Interesting! Tell me more.",
-        "Why do you think that?",
-        "That’s really cool!",
-        "I see what you mean.",
-        "Hmm… could you explain that a bit?"
-    ];
-    // Pick a random one
-    return responses[Math.floor(Math.random() * responses.length)];
+  const messageDiv = document.createElement("div");
+  messageDiv.classList.add("message", sender);
+  messageDiv.textContent = text;
+  chatBox.appendChild(messageDiv);
+  chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll
 }

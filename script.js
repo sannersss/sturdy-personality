@@ -100,9 +100,22 @@ function setPersonality(p) {
 
 // splits the text into smaller bubbles based on punctuation
 function splitIntoBubbles(text) {
-  // Split by sentence-ending punctuation
-  const fragments = text.split(/(?<=[.!?])\s+/);
-  return fragments.filter(f => f.trim().length > 0);
+  // 1) Protect emojis so we don't split before them
+  // We temporarily wrap punctuation+emoji in a token
+  const protected = text.replace(/([.!?]+)\s*([😀-🙏])/gu, "$1§$2");
+
+  // 2) Split on sentence endings:
+  // - one or more punctuation marks that typically end a sentence
+  // - followed by a space OR the end of string
+  const parts = protected.split(/(?<=[.!?]+)\s+(?!§)/g);
+
+  // 3) Restore tokens back to normal
+  const restored = parts.map(part => part.replace(/§/g, " "));
+
+  // 4) Trim and clean
+  return restored
+    .map(p => p.trim())
+    .filter(p => p.length > 0);
 }
 
 function getDelayForBubble(bubbleText) {

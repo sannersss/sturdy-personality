@@ -74,3 +74,36 @@ body {
     color: black;
     align-self: flex-start;
 }
+
+/* Personality buttons styles */
+.personality-selector {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.personality-selector button {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+}
+
+.personality-selector button:hover {
+  background: #ddd;
+}
+
+
+/* typing indicator style */
+.typing {
+  font-size: 14px;
+  color: #aaa;
+  margin: 8px;
+  font-style: italic;
+}
+
+.hidden {
+  display: none;
+}
+

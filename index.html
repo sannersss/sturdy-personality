@@ -10,10 +10,23 @@
 </head>
 
 <body>
+
+    <div class="personality-selector">
+        <button onclick="setPersonality('empathetic')">Empathetic</button>
+        <button onclick="setPersonality('playful')">Playful</button>
+        <button onclick="setPersonality('stoic')">Stoic</button>
+        <button onclick="setPersonality('analytical')">Analytical</button>
+    </div>
+
+
     <!-- Chat container -->
     <div class="chat-container">
         <div id="chat-box" class="chat-box">
             <!-- Messages will appear here dynamically -->
+        </div>
+
+        <div id="typingIndicator" class="typing hidden">
+            AI is typing...
         </div>
 
         <!-- Input area -->
